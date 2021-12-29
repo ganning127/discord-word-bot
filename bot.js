@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const wd = require("word-definition");
 const google = require('google-it');
 google.resultsPerPage = 25;
