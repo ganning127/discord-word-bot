@@ -68,7 +68,7 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(PREFIX)) {
         await handleCommand(message);
     }
-    else if (message.author.id == "297160625405296640") {
+    else if (message.author.id == "695749433907740722") {
         const insultSend = insult[Math.floor(Math.random() * insult.length)]
         console.log(insultSend);
         message.reply(insultSend);
