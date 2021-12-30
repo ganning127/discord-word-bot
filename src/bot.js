@@ -1,5 +1,6 @@
 require('dotenv').config();
 const wd = require("word-definition");
+const insult = require("./data/insults.js");
 const google = require('google-it');
 google.resultsPerPage = 25;
 const { Client, Intents, Formatters, MessageEmbed } = require('discord.js');
@@ -56,6 +57,7 @@ async function handleCommand(message) {
     else if (command === 'google') {
         handleGoogle(message, args);
     }
+
 }
 
 client.on('ready', () => {
@@ -65,6 +67,11 @@ client.on('ready', () => {
 client.on('messageCreate', async (message) => {
     if (message.content.startsWith(PREFIX)) {
         await handleCommand(message);
+    }
+    else if (message.author.id == "297160625405296640") {
+        const insultSend = insult[Math.floor(Math.random() * insult.length)]
+        console.log(insultSend);
+        message.reply(insultSend);
     }
 });
 
