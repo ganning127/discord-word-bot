@@ -57,6 +57,12 @@ async function handleCommand(message) {
     else if (command === 'google') {
         handleGoogle(message, args);
     }
+    else if (command === 'ivan') {
+        // get an insult and replace all words that are "you" or "your" with ivan
+        const insultSend = insult[Math.floor(Math.random() * insult.length)]
+        const newInsult = insultSend.replace(/you|your/gi, "ivan");
+        message.reply(newInsult);
+    }
 
 }
 
@@ -70,7 +76,6 @@ client.on('messageCreate', async (message) => {
     }
     else if (message.author.id == "695749433907740722") {
         const insultSend = insult[Math.floor(Math.random() * insult.length)]
-        console.log(insultSend);
         message.reply(insultSend);
     }
 });
