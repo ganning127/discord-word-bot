@@ -7,7 +7,6 @@ module.exports = [
     'You\'re so fat the only letters of the alphabet you know are KFC.',
     'Roses are red, violets are blue, I have 5 fingers, the 3rd ones for you.',
     'Your family tree must be a cactus because everybody on it is a prick.',
-    'If I wanted to kill myself I\'d climb your ego and jump to your IQ.',
     'If laughter is the best medicine, your life must be curing the world.',
     'Did you eat paint chips when you were a kid?',
     'I\'m not saying I hate you, but I would unplug your life support to charge my phone.',
