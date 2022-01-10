@@ -16,6 +16,7 @@
   "dependencies": {
     "discord.js": "^13.5.0",
     "dotenv": "^10.0.0",
+    "figlet": "^1.5.2",
     "google-it": "^1.6.2",
     "word-definition": "^2.1.6"
   }

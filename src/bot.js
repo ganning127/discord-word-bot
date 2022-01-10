@@ -1,13 +1,17 @@
 require('dotenv').config();
 const wd = require("word-definition");
-const insult = require("./data/insults.js");
 const google = require('google-it');
+const insults = require("./data/insults.js");
+const figlet = require('figlet');
 google.resultsPerPage = 25;
 const { Client, Intents, Formatters, MessageEmbed } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const PREFIX = "$"; // Prefix for commands
-
 async function handleDefine(message, args) {
+    if (args.length == 0) {
+        message.reply("Please provide a word to define");
+        return;
+    }
     const word = args.join(" ");
     try {
         wd.getDef(word, "en", null, async function (definition) {
@@ -23,6 +27,7 @@ async function handleDefine(message, args) {
 }
 
 async function handleGoogle(message, args) {
+    // the npm package automatically handles no arguments
     const query = args.join(" ");
     google({ 'query': query }).then(results => {
         const embeds = []
@@ -44,6 +49,31 @@ async function handleGoogle(message, args) {
     })
 }
 
+async function handleArt(message, args) {
+    if (args.length == 0) {
+        message.reply("Please enter a word to draw!");
+    }
+    const wordArt = args.join(" ");
+    figlet(wordArt, function (err, data) {
+        if (err) {
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        }
+        message.reply("```" + data + "```");
+    });
+}
+
+async function handleInsult(message, args) {
+    let insult = insults[Math.floor(Math.random() * insults.length)]
+    if (args.length == 0) {
+        message.reply(insult);
+    }
+    else if (args.length == 1) {
+        let arg = args[0];
+        message.reply(insult.replace(/you're/gi, `${arg}'s`).replace("/your/gi", `${arg}'s`).replace(/you/gi, `${arg}'s`));
+    }
+}
 
 async function handleCommand(message) {
     const [command, ...args] = message.content
@@ -57,13 +87,29 @@ async function handleCommand(message) {
     else if (command === 'google') {
         handleGoogle(message, args);
     }
-    else if (command === 'ivan') {
-        // get an insult and replace all words that are "you" or "your" with ivan
-        const insultSend = insult[Math.floor(Math.random() * insult.length)]
-        const newInsult = insultSend.replace(/you|your/gi, "ivan");
-        message.reply(newInsult);
+    else if (command === 'art') {
+        await handleArt(message, args);
     }
+    else if (command === 'insult') {
+        await handleInsult(message, args);
+    }
+    else if (command == 'help') {
+        let embeds = [];
+        let desc = `
+        **$define <word>** - Get the definition of a word
+        **$google <query>** - Search google
+        **$art <word>** - Get art for a word
+        **$insult <?name>** - Get an insult targeting you or a name (if name is not specified, it will target you)
+        **$help** - Get this message
+        `;
+        const embed = new MessageEmbed()
+            .setTitle("Word Bot Help")
+            .setDescription(desc)
+            .setColor('#0099ff');
 
+        embeds.push(embed);
+        message.reply({ embeds });
+    }
 }
 
 client.on('ready', () => {
@@ -73,10 +119,6 @@ client.on('ready', () => {
 client.on('messageCreate', async (message) => {
     if (message.content.startsWith(PREFIX)) {
         await handleCommand(message);
-    }
-    else if (message.author.id == "695749433907740722") {
-        const insultSend = insult[Math.floor(Math.random() * insult.length)]
-        message.reply(insultSend);
     }
 });
 
